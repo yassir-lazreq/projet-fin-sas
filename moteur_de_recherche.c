@@ -20,11 +20,11 @@ void ajouter_texte(){
     fgets(text, sizeof(text), stdin);
     text[strcspn(text, "\n")] = 0;
     for (int i = 0 ; i < strlen(text) ; i++){
-        text[i] = tolower((unsigned char)text[i]);
+        text[i] = tolower(text[i]);
     }
     int i = 0 , j = 0;
     while (text[i] != '\0'){
-        if(!ispunct((unsigned char)text[i])){
+        if(!ispunct(text[i])){
             text[j] = text[i];
             j++;
         }
@@ -58,7 +58,7 @@ void ajouter_texte(){
 
 void afficher_mots(){
     printf("les mots sont : \n");
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < nbrWords; i++) {
         if (tab_words[i].occurrences > 0) {
             printf("mot : %s occurrences :  %d position : ", tab_words[i].mot, tab_words[i].occurrences);
             printf("(");
@@ -78,7 +78,12 @@ void rechercher_mot_exact(){
     char mot[100];
     scanf("%s", mot);
     getchar();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < strlen(mot); i++)
+    {
+        mot[i] = tolower(mot[i]);
+    }
+    
+    for (int i = 0; i < nbrWords; i++) {
         if (strcmp(tab_words[i].mot, mot) == 0) {
             printf("mot : %s occurrences :  %d position : ", tab_words[i].mot, tab_words[i].occurrences);
             printf("(");
@@ -97,7 +102,7 @@ void rechercher_mot_partiel(){
     char mot[100];
     scanf("%s", mot);
     getchar();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < nbrWords; i++) {
         if (strstr(tab_words[i].mot, mot) != NULL) {
             printf("mot : %s occurrences :  %d position : ", tab_words[i].mot, tab_words[i].occurrences);
             printf("(");
@@ -110,8 +115,8 @@ void rechercher_mot_partiel(){
 }
 
 void trier_mots_alphabetique(){
-    for (int i = 0; i < 100 - 1; i++) {
-        for (int j = i + 1; j < 100; j++) {
+    for (int i = 0; i < nbrWords - 1; i++) {
+        for (int j = i + 1; j < nbrWords; j++) {
             if (strcmp(tab_words[i].mot, tab_words[j].mot) > 0) {
                 struct word temp = tab_words[i];
                 tab_words[i] = tab_words[j];
@@ -122,8 +127,8 @@ void trier_mots_alphabetique(){
 }
 
 void trier_mots_occurrences(){
-    for (int i = 0; i < 100 - 1; i++) {
-        for (int j = i + 1; j < 100; j++) {
+    for (int i = 0; i < nbrWords - 1; i++) {
+        for (int j = i + 1; j < nbrWords; j++) {
             if (tab_words[i].occurrences < tab_words[j].occurrences) {
                 struct word temp = tab_words[i];
                 tab_words[i] = tab_words[j];
@@ -134,8 +139,8 @@ void trier_mots_occurrences(){
 }
 
 void trier_mots_longueur(){
-    for (int i = 0; i < 100 - 1; i++) {
-        for (int j = i + 1; j < 100; j++) {
+    for (int i = 0; i < nbrWords - 1; i++) {
+        for (int j = i + 1; j < nbrWords; j++) {
             if (tab_words[i].longueur < tab_words[j].longueur) {
                 struct word temp = tab_words[i];
                 tab_words[i] = tab_words[j];
@@ -184,7 +189,7 @@ void nbr_Mots_Uniques(){
 
 void diversite_Lexicale(){
     int unique = 0;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < nbrWords; i++) {
         if (tab_words[i].occurrences == 1) {
             unique++;
         }
@@ -198,7 +203,7 @@ void diversite_Lexicale(){
 }
 void moyenne_Longueur(){
     int totalLong = 0;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < nbrWords; i++) {
         if (tab_words[i].occurrences > 0) {
             totalLong += tab_words[i].longueur * tab_words[i].occurrences;
         }
@@ -212,7 +217,7 @@ void moyenne_Longueur(){
 }
 
 void plus_Frequents(){
-    printf("le mot le plus frequent : \n");
+    printf("le mot le plus frequent : ");
     int max = 0;
     char motFreq[100];
     for (int i = 0; i < 100; i++)
@@ -230,10 +235,10 @@ void plus_Frequents(){
 }
 
 void plus_Longs(){
-    printf("le mot le plus long : \n");
+    printf("le mot le plus long : ");
     int max = 0;
     char motMax[100];
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < nbrWords; i++)
     {
         if (tab_words[i].occurrences > 0 && tab_words[i].longueur > max) {
             max = tab_words[i].longueur;
@@ -248,10 +253,10 @@ void plus_Longs(){
 }
 
 void plus_Courts(){
-    printf("le mot le plus court : \n");
+    printf("le mot le plus court : ");
     int min = 100;
     char motMin[100];
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < nbrWords; i++)
     {
         if (tab_words[i].occurrences > 0 && tab_words[i].longueur < min) {
             min = tab_words[i].longueur;
@@ -276,7 +281,7 @@ void statistiques_globales(){
 
 void palindrome(){
     printf("les mots palindromes sont : \n");
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < nbrWords; i++) {
         if (tab_words[i].occurrences > 0) {
             char temp[100];
             strcpy(temp, tab_words[i].mot);
@@ -335,13 +340,13 @@ void anagramme() {
 
 void nuage_de_mots(){
     printf("nuage de mots : \n");
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < nbrWords; i++) {
         if (tab_words[i].occurrences > 0) {
             printf("%s ", tab_words[i].mot);
             for (int j = 0; j < tab_words[i].occurrences; j++) {
                 printf("*");
             }
-            printf("\n");
+            printf(" ");
         }
     }
 }
