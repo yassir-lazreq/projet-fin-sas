@@ -13,6 +13,7 @@ struct word
 
 struct word tab_words[100];
 int nbrWords = 0;
+int totalWords = 0;
 
 void ajouter_texte(){
     printf("veuillez entrer un texte : ");
@@ -53,6 +54,7 @@ void ajouter_texte(){
             tab_words[nbrWords].longueur = strlen(word);
             nbrWords++;
         }
+        totalWords++;
         word_pos++;
         word = strtok (NULL, " ");
     }
@@ -88,7 +90,7 @@ void rechercher_mot_exact(){
     
     for (int i = 0; i < nbrWords; i++) {
         if (strcmp(tab_words[i].mot, mot) == 0) {
-            printf("mot : %s occurrences :  %d position : ", tab_words[i].mot, tab_words[i].occurrences);
+            printf("mot : %s occurrences :  %d  longueur %d position : ", tab_words[i].mot, tab_words[i].occurrences, tab_words[i].longueur);
             printf("(");
             for (int j = 0; j < tab_words[i].occurrences; j++) {
                 printf("%d ", tab_words[i].position[j]);
@@ -144,7 +146,7 @@ void trier_mots_occurrences(){
 void trier_mots_longueur(){
     for (int i = 0; i < nbrWords - 1; i++) {
         for (int j = i + 1; j < nbrWords; j++) {
-            if (tab_words[i].longueur < tab_words[j].longueur) {
+            if (tab_words[i].longueur > tab_words[j].longueur) {
                 struct word temp = tab_words[i];
                 tab_words[i] = tab_words[j];
                 tab_words[j] = temp;
@@ -178,7 +180,7 @@ void trier_mots(){
 }
 
 void nbr_Total_Mots(){
-    printf("nombre total de mots : %d\n", nbrWords);
+    printf("nombre total de mots : %d\n", totalWords);
 }
 void nbr_Mots_Uniques(){
     int count = 0;
@@ -205,31 +207,14 @@ void diversite_Lexicale(){
     }
 }
 
-/*void moyenne_Longueur(){
-    int totalLong = 0;
-    for (int i = 0; i < nbrWords; i++) {
-        if (tab_words[i].occurrences > 0) {
-            totalLong += tab_words[i].longueur * tab_words[i].occurrences;
-        }
-    }
-    if (nbrWords > 0) {
-        float moyenne = (float)totalLong / nbrWords;
-        printf("moyenne de longueur des mots : %.2f\n", moyenne);
-    } else {
-        printf("moyenne de longueur des mots : 0.00\n");
-    }
-}
-*/
 
 void moyenne_Longueur(){
     int totalLong = 0;
-    int totalOcc = 0;
     for (int i = 0; i < nbrWords; i++) {
         totalLong += tab_words[i].longueur * tab_words[i].occurrences;
-        totalOcc += tab_words[i].occurrences;
     }
-    if (totalOcc > 0) {
-        float moyenne = (float)totalLong / totalOcc;
+    if (totalWords > 0) {
+        float moyenne = (float)totalLong / totalWords;
         printf("moyenne de longueur des mots : %.2f\n", moyenne);
     } else {
         printf("moyenne de longueur des mots : 0.00\n");
@@ -298,28 +283,13 @@ void statistiques_globales(){
     plus_Courts();
 }
 
-void palindrome(){
+void palindrome() {
     printf("les mots palindromes sont : \n");
     for (int i = 0; i < nbrWords; i++) {
-        if (tab_words[i].occurrences > 0) {
-            char temp[100];
-            strcpy(temp, tab_words[i].mot);
-            int len = strlen(temp);
-            int is_palindrome = 1;
-            for (int j = 0; j < len / 2; j++) {
-                if (temp[j] != temp[len - j - 1]) {
-                    is_palindrome = 0;
-                    break;
-                }
-            }
-            if (is_palindrome && len > 1) {
-                printf("mot : %s occurrences :  %d position : ", tab_words[i].mot, tab_words[i].occurrences);
-                printf("(");
-                for (int j = 0; j < tab_words[i].occurrences; j++) {
-                    printf("%d ", tab_words[i].position[j]);
-                }
-                printf(")\n");
-            }
+        char temp[100];
+        strcpy(temp, tab_words[i].mot);
+        if (strcmp(tab_words[i].mot, strrev(temp)) == 0 && strlen(tab_words[i].mot) > 1) {
+            printf("%s\n", tab_words[i].mot);
         }
     }
 }
