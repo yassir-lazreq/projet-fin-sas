@@ -285,12 +285,17 @@ void statistiques_globales(){
 
 void palindrome() {
     printf("les mots palindromes sont : \n");
+    int found = 0;
     for (int i = 0; i < nbrWords; i++) {
         char temp[100];
         strcpy(temp, tab_words[i].mot);
         if (strcmp(tab_words[i].mot, strrev(temp)) == 0 && strlen(tab_words[i].mot) > 1) {
             printf("%s\n", tab_words[i].mot);
+            found = 1;
         }
+    }
+    if (!found) {
+        printf("Aucun palindrome trouve\n");
     }
 }
 
@@ -308,7 +313,8 @@ void trier_lettres(char *str) {
 }
 
 void anagramme() {
-    int printed[100] = {0};
+    int visited[100] = {0};
+    int found = 0;
     for (int i = 0; i < nbrWords; i++) {
         for (int j = i + 1; j < nbrWords; j++) {
             if (strlen(tab_words[i].mot) == strlen(tab_words[j].mot)) {
@@ -317,13 +323,17 @@ void anagramme() {
                 strcpy(copie2, tab_words[j].mot);
                 trier_lettres(copie1);
                 trier_lettres(copie2);
-                if (strcmp(copie1, copie2) == 0 && !printed[j] && !printed[i]) {
+                if (strcmp(copie1, copie2) == 0 && !visited[j] && !visited[i]) {
                     printf("Anagramme: %s et %s\n", tab_words[i].mot, tab_words[j].mot);
-                    printed[j] = 1;
-                    printed[i] = 1;
+                    visited[j] = 1;
+                    visited[i] = 1;
+                    found = 1;
                 }
             }
         }
+    }
+    if (!found) {
+        printf("Aucun anagramme trouve\n");
     }
 }
 
@@ -331,13 +341,13 @@ void nuage_de_mots(){
     printf("nuage de mots : \n");
     for (int i = 0; i < nbrWords; i++) {
         if (tab_words[i].occurrences > 0) {
-            printf("%s ", tab_words[i].mot);
-            for (int j = 0; j < tab_words[i].occurrences; j++) {
+            for (int j = 0; j < tab_words[i].longueur; j++) {
                 printf("*");
             }
             printf(" ");
         }
     }
+    printf("\n");
 }
 
 void analyses(){
