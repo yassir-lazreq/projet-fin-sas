@@ -33,8 +33,10 @@ void ajouter_texte(){
     text[j] = '\0';
     char *word = strtok(text, " ");
     int word_pos = 1;
+    printf("text traite : " );
     while (word != NULL)
     {
+        printf("%s ", word);
         int found = 0;
         for (int k = 0; k < nbrWords; k++) {
             if (strcmp(tab_words[k].mot, word) == 0) {
@@ -54,6 +56,7 @@ void ajouter_texte(){
         word_pos++;
         word = strtok (NULL, " ");
     }
+    printf("\n");
 }
 
 void afficher_mots(){
