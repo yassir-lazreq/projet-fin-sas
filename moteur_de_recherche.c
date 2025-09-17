@@ -204,7 +204,8 @@ void diversite_Lexicale(){
         printf("diversite lexicale : 0.00\n");
     }
 }
-void moyenne_Longueur(){
+
+/*void moyenne_Longueur(){
     int totalLong = 0;
     for (int i = 0; i < nbrWords; i++) {
         if (tab_words[i].occurrences > 0) {
@@ -218,7 +219,22 @@ void moyenne_Longueur(){
         printf("moyenne de longueur des mots : 0.00\n");
     }
 }
+*/
 
+void moyenne_Longueur(){
+    int totalLong = 0;
+    int totalOcc = 0;
+    for (int i = 0; i < nbrWords; i++) {
+        totalLong += tab_words[i].longueur * tab_words[i].occurrences;
+        totalOcc += tab_words[i].occurrences;
+    }
+    if (totalOcc > 0) {
+        float moyenne = (float)totalLong / totalOcc;
+        printf("moyenne de longueur des mots : %.2f\n", moyenne);
+    } else {
+        printf("moyenne de longueur des mots : 0.00\n");
+    }
+}
 void plus_Frequents(){
     printf("le mot le plus frequent : ");
     int max = 0;
